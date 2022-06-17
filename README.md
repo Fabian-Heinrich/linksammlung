@@ -1,6 +1,9 @@
+
+
 # Linksammlung
 
 Seite zum Sammeln und Kategorisieren von hilfreichen Links.
+Die Seiten werden per JSON-Datei verwaltet und bereitgestellt.
 
 ## Project Setup
 
