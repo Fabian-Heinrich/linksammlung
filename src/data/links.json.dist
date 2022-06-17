@@ -3,18 +3,33 @@
     "label": "Example",
     "description": "Example Site",
     "url": "https://example.com",
-    "category": [
-      "Test",
-      "Example"
+    "categories": [
+      {
+        "label": "Info"
+      }
     ]
   },
   {
     "label": "Test",
-    "description": "Test",
+    "description": "Example Site",
     "url": "https://example.com",
-    "category": [
-      "Test",
-      "Info"
+    "categories": [
+      {
+        "label": "Shopping"
+      }
+    ]
+  },
+  {
+    "label": "Test and Example",
+    "description": "Example Site",
+    "url": "https://example.com",
+    "categories": [
+      {
+        "label": "Info"
+      },
+      {
+        "label": "News"
+      }
     ]
   }
 ]
