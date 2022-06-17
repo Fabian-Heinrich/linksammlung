@@ -1,0 +1,20 @@
+[
+  {
+    "label": "Example",
+    "description": "Example Site",
+    "url": "https://example.com",
+    "category": [
+      "Test",
+      "Example"
+    ]
+  },
+  {
+    "label": "Test",
+    "description": "Test",
+    "url": "https://example.com",
+    "category": [
+      "Test",
+      "Info"
+    ]
+  }
+]
