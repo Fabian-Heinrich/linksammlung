@@ -22,3 +22,8 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### Edit Configuration
+
+- Copy src/data/categories.json.dist to src/data/categories.json and update the categories
+- Copy src/data/links.json.dist to src/data/links.json and add your own links
