@@ -7,12 +7,18 @@
       </form>
     </div>
     <div class="col-sm-12 col-lg-6 my-1">
-      <label for="selectedCategories">Kategorien:</label>
-      <select id="selectedCategories" class="form-select" v-model="selectedCategories" multiple @change="updateSelectedCategories" size="1">
-        <option :value="{label: category.label}" v-for="category in categories">
-          {{ category.label }}
-        </option>
-      </select>
+      <label>Kategorien:</label>
+      <div v-for="(category, key) in categories" :key="key" class="category-checkbox">
+        <input
+            type="checkbox"
+            v-model="selectedCategories"
+            :value="category"
+            :id="'category-checkbox-' + key"
+            class="btn-check"
+            @change="updateSelectedCategories"
+        >
+        <label :for="'category-checkbox-' + key" class="btn btn-outline-dark">{{ category.label }}</label>
+      </div>
     </div>
   </div>
 </template>
@@ -50,16 +56,9 @@ export default {
 </script>
 
 <style scoped>
-select {
-  width: auto;
-  max-width: 100%;
-  overflow-x: scroll;
-}
-
-select option {
+.category-checkbox {
   display: inline-block;
-  margin-left: 5px;
   margin-right: 5px;
-  border-radius: 5px;
+  margin-bottom: 5px;
 }
 </style>
