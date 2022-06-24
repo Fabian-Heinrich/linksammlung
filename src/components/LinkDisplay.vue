@@ -9,7 +9,7 @@
           <div class="card-text">
             {{ link.description }}
           </div>
-          <a :href="link.url" class="card-link">{{ link.url }}</a>
+          <a :href="link.url" target="_blank" class="card-link">{{ link.url }}</a>
         </div>
         <div class="card-footer">
           <span @click="updateSelectedCategory(category)" class="badge bg-dark mx-1" v-for="category in link.categories">{{ category.label }}</span>
