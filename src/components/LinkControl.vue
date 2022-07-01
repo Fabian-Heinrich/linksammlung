@@ -2,8 +2,10 @@
   <div class="row">
     <div class="col-sm-12 col-lg-6 my-1">
       <form @submit="updateSearchString">
-        <input v-model="searchString" @keyup="updateSearchString">
-        <button type="submit">Suchen</button>
+        <div class="form-group">
+          <input class="form-control" placeholder="In ausgewählten Kategorien suchen" v-model="searchString"
+                 @keyup="updateSearchString">
+        </div>
       </form>
     </div>
     <div class="col-sm-12 col-lg-6 my-1">
@@ -18,6 +20,10 @@
             @change="updateSelectedCategories"
         >
         <label :for="'category-checkbox-' + key" class="btn btn-outline-dark">{{ category.label }}</label>
+      </div>
+      <div>
+        <button class="btn btn-primary mx-1" @click="selectAllCategories">Alle</button>
+        <button class="btn btn-primary mx-1" @click="selectNoCategories">Keine</button>
       </div>
     </div>
   </div>
@@ -47,6 +53,12 @@ export default {
     },
     updateSelectedCategories() {
       this.$emit('update-selected-categories', this.selectedCategories)
+    },
+    selectAllCategories() {
+      this.$emit('update-selected-categories', this.categories)
+    },
+    selectNoCategories() {
+      this.$emit('update-selected-categories', [])
     }
   },
   mounted() {
