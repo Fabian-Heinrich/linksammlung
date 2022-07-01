@@ -9,22 +9,21 @@
         @update-search-string="updateSearchString"
         @update-selected-categories="updateSelectedCategories"
     ></link-control>
-    <link-display :links="filteredLinks" :count-all-links="links.length" @update-selected-category="updateSelectedCategories"></link-display>
+    <link-display :links="filteredLinks" :count-all-links="links.length"
+                  @update-selected-category="updateSelectedCategories"></link-display>
   </main>
 </template>
 
 <script>
 import LinkDisplay from "./components/LinkDisplay.vue";
 import LinkControl from "./components/LinkControl.vue";
-import linksJSON from "./data/links.json"
-import categoriesJSON from "./data/categories.json"
 
 export default {
   components: {LinkControl, LinkDisplay},
   data: () => {
     return {
-      links: linksJSON,
-      categories: categoriesJSON,
+      links: [],
+      categories: [],
       selectedCategories: [],
       searchString: ''
     }
@@ -35,6 +34,16 @@ export default {
     },
     updateSelectedCategories(categories) {
       this.selectedCategories = categories
+    },
+    async getData() {
+      try {
+        let resLinks = await fetch('http://localhost:3001/links')
+        this.links = await resLinks.json()
+        let resCategories = await fetch('http://localhost:3001/categories')
+        this.selectedCategories = this.categories = await resCategories.json()
+      } catch (error) {
+        console.error(error)
+      }
     }
   },
   computed: {
@@ -59,7 +68,7 @@ export default {
     }
   },
   created() {
-    this.selectedCategories = this.categories
+    this.getData()
   }
 }
 </script>
