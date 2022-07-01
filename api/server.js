@@ -15,10 +15,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.listen(3001, () => {
 
-    console.log('Listening on 3001')
-
 })
 
 app.get('/', (req, res) => {
-    res.send("Test!")
+    res.send("API")
 })
