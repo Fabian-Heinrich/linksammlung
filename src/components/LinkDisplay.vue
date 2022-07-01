@@ -1,5 +1,10 @@
 <template>
   <div class="row">
+    <div class="col-12">
+      Zeigt {{ links.length }} von {{ countAllLinks }} Links an
+    </div>
+  </div>
+  <div class="row">
     <div class="col-sm-12 col-lg-6 my-2" v-for="link of links">
       <div class="card">
         <div class="card-header">
@@ -12,7 +17,8 @@
           <a :href="link.url" target="_blank" class="card-link">{{ link.url }}</a>
         </div>
         <div class="card-footer">
-          <span @click="updateSelectedCategory(category)" class="badge bg-dark mx-1" v-for="category in link.categories">{{ category.label }}</span>
+          <span @click="updateSelectedCategory(category)" class="badge bg-dark mx-1"
+                v-for="category in link.categories">{{ category.label }}</span>
         </div>
       </div>
     </div>
@@ -26,6 +32,9 @@ export default {
     links: {
       type: Array,
       required: true
+    },
+    countAllLinks: {
+      type: Number
     },
     selectedCategories: {
       type: Array

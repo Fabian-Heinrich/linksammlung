@@ -9,7 +9,7 @@
         @update-search-string="updateSearchString"
         @update-selected-categories="updateSelectedCategories"
     ></link-control>
-    <link-display :links="filteredLinks" @update-selected-category="updateSelectedCategories"></link-display>
+    <link-display :links="filteredLinks" :count-all-links="links.length" @update-selected-category="updateSelectedCategories"></link-display>
   </main>
 </template>
 
