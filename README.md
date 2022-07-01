@@ -7,26 +7,13 @@ Die Seiten werden per JSON-Datei verwaltet und bereitgestellt.
 
 ## Project Setup
 
-### Frontend Setup
-
 ```sh
-cd frontend
-```
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
+docker-compose up
 ```
 
 ### Compile and Minify for Production
 
 ```sh
-npm run build
 ```
 
 ### Edit Configuration
