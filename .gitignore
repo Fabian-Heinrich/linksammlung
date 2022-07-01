@@ -1,4 +1,4 @@
-/node_modules
-/src/data/links.json
-/src/data/categories.json
-/dist
+/frontend/node_modules
+/frontend//src/data/links.json
+/frontend/src/data/categories.json
+/frontend/dist
