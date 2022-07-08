@@ -16,7 +16,7 @@ app.use(cors({
 app.use(bodyParser.urlencoded({extended: true}))
 
 app.listen(process.env.API_PORT, () => {
-    console.log("Listening on 3001")
+    console.log("Listening on " + process.env.API_PORT)
 })
 
 app.get('/', (req, res) => {

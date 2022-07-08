@@ -2,5 +2,6 @@
 /frontend/src/data/links.json
 /frontend/src/data/categories.json
 /frontend/dist
+/api/node_modules
 
 .env

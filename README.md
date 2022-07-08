@@ -7,6 +7,8 @@ Die Seiten werden per JSON-Datei verwaltet und bereitgestellt.
 
 ## Project Setup
 
+First create a new .env from .env.dist and set the variables. Then run project via docker-compose:
+
 ```sh
 docker-compose up
 ```
