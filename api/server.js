@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const MongoClient = require('mongodb').MongoClient
 const cors = require('cors')
+const mongoose = require('mongoose')
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config({path: '../.env'});
@@ -23,38 +23,57 @@ app.get('/', (req, res) => {
     res.send("API")
 })
 
-MongoClient.connect(process.env.DATABASE_URL).then(client => {
-    console.log('Connected to DB')
-    const db = client.db(process.env.DATABASE_NAME)
-    const linkCollection = db.collection('links')
 
-    app.post('/link', (req, res) => {
-        linkCollection.insertOne(req.body).then(result => {
-                res.redirect('/')
-            }
-        ).catch(error => console.error(error))
-    })
+mongoose.connect(process.env.DATABASE_URL, {dbName: process.env.DATABASE_NAME}).then(client => {
+        console.log("Mongoose connected")
 
-    app.get('/links', (req, res) => {
-            db.collection('links').aggregate([{
-                $lookup: {
-                    from: 'categories',
-                    localField: 'category_ids',
-                    foreignField: '_id',
-                    as: 'categories'
-                }
-            }]).toArray().then(result => {
-                res.send(result)
+        const linkSchema = new client.Schema({
+            url: String,
+            label: String,
+            description: String,
+            category_ids: [client.Schema.Types.ObjectId]
+        })
+        const categorySchema = new client.Schema({
+            label: String
+        })
+
+        const Link = client.model('Link', linkSchema)
+        const Category = client.model('Category', categorySchema)
+
+        app.post('/link', (req, res) => {
+            const newLink = new Link({
+                url: req.body.url,
+                label: req.body.label,
+                description: req.body.description,
+                category_ids: req.body.category_ids
             })
-        }
-    )
 
-    app.get('/categories', (rey, res) => {
-        db.collection('categories').find().toArray().then(results => {
-                res.send(results)
+            newLink.save()
+            res.redirect('http://localhost:3000')
+        })
+
+        app.get('/links', (req, res) => {
+                Link.aggregate([{
+                    $lookup: {
+                        from: 'categories',
+                        localField: 'category_ids',
+                        foreignField: '_id',
+                        as: 'categories'
+                    }
+                }]).then(links => {
+                        res.send(links)
+                    }
+                ).catch(error => console.error(error))
             }
         )
-    })
-}).catch(error => console.error(error))
 
+        app.get('/categories', (rey, res) => {
+            Category.find().then(results => {
+                    res.send(results)
+                }
+            ).catch(error => console.log(error))
+        })
+
+    }
+).catch(error => console.error(error))
 
