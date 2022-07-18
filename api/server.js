@@ -2,9 +2,13 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
+const argon2 = require('argon2')
 
 const Link = require('./models/link.js')
 const Category = require('./models/category.js')
+const User = require('./models/user.js')
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -30,6 +34,35 @@ app.get('/', (req, res) => {
 
 mongoose.connect(process.env.DATABASE_URL, {dbName: process.env.DATABASE_NAME}).then(client => {
         console.log("Mongoose connected")
+
+        passport.use(new LocalStrategy(function verify(username, password, cb){
+            User.find({ username: username }).then(userObject => {
+                argon2.verify(userObject.password, password).then(matches => {
+                        if (matches) {
+                            return cb(null, userObject)
+                        } else {
+                            return cb(null, false, { message: 'Incorrect username or password.'})
+                        }
+                    }
+                )
+            }
+            ).catch(error => cb(error))
+        }))
+
+        app.post('/login', passport.authenticate('local', {
+            successRedirect: '/',
+            failureRedirect: '/login'
+        }))
+
+        app.post('/signup', (req, res) => {
+            const newUser = new User({
+                username: req.username,
+                password: res.password
+            })
+
+            newUser.save()
+            res.redirect('http://localhost:3000')
+        })
 
         app.post('/link', (req, res) => {
             const newLink = new Link({
