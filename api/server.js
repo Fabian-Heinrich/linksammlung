@@ -3,6 +3,10 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
 
+const Link = require('./models/link.js')
+const Category = require('./models/category.js')
+
+
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config({path: '../.env'});
 }
@@ -26,19 +30,6 @@ app.get('/', (req, res) => {
 
 mongoose.connect(process.env.DATABASE_URL, {dbName: process.env.DATABASE_NAME}).then(client => {
         console.log("Mongoose connected")
-
-        const linkSchema = new client.Schema({
-            url: String,
-            label: String,
-            description: String,
-            category_ids: [client.Schema.Types.ObjectId]
-        })
-        const categorySchema = new client.Schema({
-            label: String
-        })
-
-        const Link = client.model('Link', linkSchema)
-        const Category = client.model('Category', categorySchema)
 
         app.post('/link', (req, res) => {
             const newLink = new Link({
