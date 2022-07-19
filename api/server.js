@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const argon2 = require('argon2')
+const session = require('express-session')
 
 const Link = require('./models/link.js')
 const Category = require('./models/category.js')
@@ -36,7 +37,8 @@ mongoose.connect(process.env.DATABASE_URL, {dbName: process.env.DATABASE_NAME}).
         console.log("Mongoose connected")
 
         passport.use(new LocalStrategy(function verify(username, password, cb){
-            User.find({ username: username }).then(userObject => {
+            User.findOne({ username: username }).then(userObject => {
+                console.log(userObject.password + ' ' + password)
                 argon2.verify(userObject.password, password).then(matches => {
                         if (matches) {
                             return cb(null, userObject)
@@ -46,22 +48,24 @@ mongoose.connect(process.env.DATABASE_URL, {dbName: process.env.DATABASE_NAME}).
                     }
                 )
             }
-            ).catch(error => cb(error))
+            ).catch(error => console.log(error))
         }))
 
         app.post('/login', passport.authenticate('local', {
-            successRedirect: '/',
-            failureRedirect: '/login'
+            successRedirect: 'http://localhost:3000/admin.html',
+            failureRedirect: 'http://localhost:3000/login.html'
         }))
 
         app.post('/signup', (req, res) => {
-            const newUser = new User({
-                username: req.username,
-                password: res.password
-            })
+            argon2.hash(req.body.password).then(hashedPassword => {
+                const newUser = new User({
+                    username: req.body.username,
+                    password: hashedPassword
+                })
 
-            newUser.save()
-            res.redirect('http://localhost:3000')
+                newUser.save()
+                res.redirect('http://localhost:3000')
+            }).catch(error => console.log(error))
         })
 
         app.post('/link', (req, res) => {
